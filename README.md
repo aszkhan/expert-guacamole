@@ -18,10 +18,21 @@ Steps after cloning the project:
 
 Steps to create and run docker image in local:-
 1. Install docker.
-2. Set profile to ```local_docker``` in the application.properties file.
-2. Run the following commands:- 
-    ```./gradlew bootBuildImage --imageName=finflux/elms-platform```
-    ```docker network create finflux-elms-net```
-    ```docker run --name elms-mysql-database -p3333:3306 --network finflux-elms-net -e MYSQL_ROOT_PASSWORD=mysql -e MYSQL_DATABASE=elms-db -d mysql```
-    ```docker run --network finflux-elms-net --name elms-platform-container -p 8090:8080 finflux/elms-platform```
-3. The server will run at ```http://localhost:8090```
+2. Set profile to ```spring.profiles.active=local_docker``` in the application.properties file.
+3. Build image: 
+```
+>> ./gradlew bootBuildImage --imageName=finflux/elms-platform
+```
+4. Establish docker network: 
+```
+docker network create finflux-elms-net
+```
+5. Create database: 
+```
+docker run --name elms-mysql-database -p3333:3306 --network finflux-elms-net -e MYSQL_ROOT_PASSWORD=mysql -e MYSQL_DATABASE=elms-db -d mysql
+```
+6. Run server locally in docker: 
+```
+docker run --network finflux-elms-net --name elms-platform-container -p 8090:8080 finflux/elms-platform
+```
+7. The server will run at ```http://localhost:8090```
